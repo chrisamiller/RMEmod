@@ -7,7 +7,7 @@ exclusivity. The significance of these patterns is determined using
 the algorithmic significance test
 
 For a complete description, see this publication:
-Discovering functional modules by identifying recurrent and mutually exclusive mutational patterns in tumors. Christopher A. Miller, Stephen H. Settle, Erik P. Sulman, Kenneth D Aldape, and Aleksandar Milosavljevic. BMC Medical Genomics. 2011, 4:34 doi:10.1186/1755-8794-4-34
+Discovering functional modules by identifying recurrent and mutually exclusive mutational patterns in tumors. Christopher A. Miller, Stephen H. Settle, Erik P. Sulman, Kenneth D Aldape, and Aleksandar Milosavljevic. BMC Medical Genomics. 2011, 4:34 doi:10.1186/1755-8794-4-34 (http://www.biomedcentral.com/1755-8794/4/34)
 
 Requirements: Bash interpreter, Ruby >1.8 
 Author: Chris Miller (chrisamiller@gmail.com)
