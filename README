@@ -1,0 +1,98 @@
+
+A set of scripts that use patterns of recurrence and mutual exclusivity 
+to identify functional modules in tumors. The tool will build a weighted 
+graph using the Winnow algorithm, then search it for modules that are
+highly recurrent (across samples) and have high levels of mutual 
+exclusivity. The significance of these patterns is determined using 
+the algorithmic significance test
+
+Requirements: Bash interpreter, Ruby >1.8 
+Author: Chris Miller (chrisamiller@gmail.com)
+Version: 1.0
+License: MIT (see LICENSE)
+
+Input:
+  - A binary matrix detailing which genes are aberrant in each sample. 
+    The binary matrix should be constructed such that the first row and 
+    column contain labels, and every other value is either a one or a zero.
+
+Output:
+  - A list of the most highly significant modules (that exceed the specified
+    significance threshold)
+
+
+Usage:
+  - execute run.sh with no arguments for basic usage info
+
+
+Parameters:
+
+--maxModSize   The largest module size that the algorithm will attempt to 
+               find. Warning! The algorithm's complexity grows very quickly 
+               as a result of using combinatorial search. Values over 5,
+               applied to very large matrices, may take a long time (days).
+
+--infile       A tab-delimited file containing a binary matrix, structured 
+               as follows: 
+                - a header row containing sample ids
+                - a header column containing gene names
+                - each position in the matrix should contain either 1 or 0,
+                  with a 1 specifying that a particular gene is aberrant 
+                  in a specific sample.
+
+--genes        An integer representing the total number of genes assated. 
+               This allows for multiple testing correction. Include all 
+               genes assayed, even if they are not represented the matrix 
+               (there is little reason to include genes in the matrix that 
+               have no mutations in any sample).
+
+--outFile1     Output file 1 - a complete list of all potential modules
+
+--outFile2     Output file 2 - the largest and most significant 
+               non-overlappingmodules 
+
+--threshold    Winnow threshold - the algorithm speeds up the search 
+               process by excluding poor edges. This parameter controls
+               the threhold score for an edge to be kept.  Due to Winnow's 
+               design, these values should be powers of 2. (4, 8. 16, 32 ...)
+               Default value: 4
+
+               The optimal value is dependent on size of the input data. 
+               Filtering too agressively may lead to missing modules. Some 
+               suggested values:
+                 ~1000  attributes, ~200 samples:  4
+                 ~5000  attributes, ~500 samples:  32
+                 ~18000 attributes, ~500 samples:  128
+
+
+--minFreq      Genes must be altered in this proportion of the samples to 
+               be considered for inclusion in a module. Recommended default
+               is 0.10, as the false positive rate increases below that 
+               point.The minimum frequency of alteration required for a gene 
+               to be included in the search for modules. Default value: 0.10
+               
+--bgRate       Background Rate - the expected odds of a particular attribute
+               in a particular sample being altered, assuming no selective 
+               pressure. The default value assumes data composed of copy 
+               number and somatic mutation assays, and is derived from HapMap
+               data and estimation of passenger mutation rates in glioblastoma 
+               multiforme.  Default value: 0.01037848
+
+--sigThresh    Significance Threshold - the minimum algorithmic significance 
+               value that a module must exceed. Optimal values will depend 
+               on input data size. Suggested values:
+                 ~1000  genes, ~200 samples: 100
+                 ~5000  genes, ~500 samples: 200
+                 ~18000 genes, ~500 samples: 300
+
+Example:
+
+  The exampleFiles folder contains a contains a binary matrix of simulated data. 
+  The first 1290 rows are simulated genes with a mutation distribution based on 
+  those found in a large glioblastoma tumor set. The last 3 are generated such 
+  that mutations follow an RME pattern.
+
+  To run the example:
+
+    cd exampleFiles/
+    bash ../run.sh -s 3 -i input.dat -g 1290 -o potentialModules -p topModules -t 200
