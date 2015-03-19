@@ -99,3 +99,8 @@ Example:
 
     cd exampleFiles/
     bash ../run.sh -s 3 -i input.dat -g 1290 -o potentialModules -p topModules -t 200
+
+
+---------
+
+RMEmod was developed at Baylor College of Medicine, in the Bionformatics Research Laboratory (http://www.genboree.org/site/bioinformatics_research_laboratory)
